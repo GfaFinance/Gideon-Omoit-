@@ -999,8 +999,8 @@ body.dark .contact-info p {
   color: #aaa;
 }
 
-body.dark .contact-info h2{
-  color:#e0e0e0;
+body.dark h2{
+  color: #e0e0e0;
 }
 
 body.dark .stats-grid .stat span:first-child {
