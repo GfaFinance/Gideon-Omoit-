@@ -90,7 +90,7 @@ body {
   position: absolute;
   inset: 0;
   /*background-image: url('https://images.pexels.com/photos/3184419/pexels-photo-3184419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');*/
-  background-image: url('porsche.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+  background-image: url('porsche.jpg');
   background-size: cover;
   background-position: center;
   opacity: 0.2;
