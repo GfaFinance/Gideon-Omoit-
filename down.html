@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Download PDF</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      text-align: center;
+      background-color: black;
+      color: white;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 10px;
+    }
+    #linkContainer {
+      margin-top: 20px;
+      display: none;
+    }
+    #pdfLink {
+      color: cyan;
+      word-break: break-all;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Download Your PDF</h1>
+  <p>This link will expire after 1 hour or after one download.</p>
+  <button id="downloadBtn">Generate PDF Link</button>
+
+  <div id="linkContainer">
+    <p>Here is your download link:</p>
+    <p id="pdfLink"></p>
+    <button id="copyBtn">Copy Link</button>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://zlfxapznxbjbqgdhtouh.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsZnhhcHpueGJqYnFnZGh0b3VoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDk1OTAyNjEsImV4cCI6MjA2NTE2NjI2MX0.OmDmq7jmNsN9-oOZSgkE0IaI2RQReG5Jf4v_oh3hZ6U';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const filePath = 'volume-01.pdf';
+    const bucket = 'fx-course-vol1';
+
+    const downloadBtn = document.getElementById('downloadBtn');
+    const linkContainer = document.getElementById('linkContainer');
+    const pdfLink = document.getElementById('pdfLink');
+    const copyBtn = document.getElementById('copyBtn');
+
+    downloadBtn.addEventListener('click', async () => {
+      const { data, error } = await supabase
+        .storage
+        .from(bucket)
+        .createSignedUrl(filePath, 3600);
+
+      if (error) {
+        alert('Error generating download link');
+        return;
+      }
+
+      pdfLink.textContent = data.signedUrl;
+      linkContainer.style.display = 'block';
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const text = pdfLink.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Link copied to clipboard!');
+      }).catch(() => {
+        alert('Failed to copy link.');
+      });
+    });
+  </script>
+</body>
+</html>
